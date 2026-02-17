@@ -20,16 +20,10 @@ const localStrategy = new LocalStrategy(
 
 import { User } from "../../models/userModel";
 
-/*
-FIX ME (types) 😭
-*/
 passport.serializeUser(function (user: Express.User, done: (err: any, id?: number) => void) {
   done(null, (user as User).id);
 });
 
-/*
-FIX ME (types) 😭
-*/
 passport.deserializeUser(function (id: number, done: (err: any, user?: User | null) => void) {
   let user = getUserById(id);
   if (user) {

@@ -1,0 +1,28 @@
+<h1 class="mt-4">Admin Dashboard</h1>
+<p class="lead mb-3">Welcome Admin: <%= user.name %></p>
+
+<h3>Active Sessions</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Session ID</th>
+            <th>User ID</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Object.keys(sessions).forEach(function(sessionId) { %>
+            <tr>
+                <td><%= sessionId %></td>
+                <td>
+                    <%= sessions[sessionId].passport ? sessions[sessionId].passport.user : 'Guest' %>
+                </td>
+                <td>
+                    <a href="/admin/revoke/<%= sessionId %>" class="btn btn-danger btn-sm">Revoke Session</a>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<a href="/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
