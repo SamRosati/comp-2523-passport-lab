@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from "express";
 import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
@@ -10,8 +11,7 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(
-  session({
+app.use(session({
     secret: "secret",
     resave: false,
     saveUninitialized: false,
