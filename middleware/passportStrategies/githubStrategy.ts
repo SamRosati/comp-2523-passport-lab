@@ -1,6 +1,7 @@
-import { Strategy as GitHubStrategy } from 'passport-github2';
+import { Request } from 'express';
+import { Strategy as GitHubStrategy, Profile } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
-import { database } from '../../models/userModel';
+import { database, User } from '../../models/userModel';
 
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
@@ -10,18 +11,17 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
         passReqToCallback: true,
     },
     
-    /* FIX ME 😭 */
-async (req: any, accessToken: string, refreshToken: string, profile: any, done: any) => {
-        // Logic to find or create a user in your local fake database
-        let user = database.find(u => u.id === parseInt(profile.id));
+    async (req: Request, accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any, info?: any) => void) => {
+        // Logic to find or create a user in local fake database
+        let user: User | undefined = database.find(u => u.id === parseInt(profile.id));
         
         if (!user) {
-            user = {
+            const newUser: User = {
                 id: parseInt(profile.id),
-                name: profile.displayName || profile.username,
+                name: profile.displayName || profile.username || "Unknown",
                 email: profile.emails ? profile.emails[0].value : "",
             };
-            database.push(user); // Add the new GitHub user to your database
+            database.push(newUser); // Add the new GitHub user to your database
         }
         return done(null, user);
     },
